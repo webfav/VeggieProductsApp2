@@ -1,0 +1,109 @@
+﻿@*@model IEnumerable<VeggieProductsApp2.Models.Product>*@
+@model PaginatedList<VeggieProductsApp2.Models.Product>
+@using VeggieProductsApp2.ManagedUsers
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tryk her for at tilføje et nyt produkt til listen</a>
+</p>
+<br />
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color border backgroundWhite">
+        <p>
+            <input class="form-control mr-sm-2" type="text" name="SearchString" placeholder="Indtast produkt eller kategori" value="@ViewData["CurrentFilter"]" />
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Søg</button>          
+            <a class="btn btn-outline-primary" asp-action="Index">Tilbage til fuld liste</a>
+        </p>
+    </div>
+</form>
+<div class="border backgroundWhite">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        @*@Html.DisplayNameFor(model => model.ProductName)*@
+                    </a>
+                </th>
+                <th>Beskrivelse</th>
+                <th>Mærke</th>
+                <th>Pris</th>
+                <th>Dato</th>
+                <th>Butik</th>
+                <th>Adresse</th>
+                <th>Postnr</th>
+                <th>By</th>
+                <th>Kategori</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BrandName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShopName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zipcode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" class="btn btn-primary" asp-route-id="@item.Id">Rediger </a><br />
+                        <a asp-action="Details" class="btn btn-info" asp-route-id="@item.Id">Detaljer</a><br />
+                        @if (User.IsInRole(Users.ManagerUser))
+                        {
+                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Slet   </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : ""; }
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-primary @prevDisabled">
+        Forrige side
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-primary @nextDisabled">
+        Næste side
+    </a>
+
+</div>
+
+

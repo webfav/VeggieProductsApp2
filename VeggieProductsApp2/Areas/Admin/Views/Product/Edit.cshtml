@@ -1,0 +1,115 @@
+﻿@*@model VeggieProductsApp2.Models.Product*@
+@model VeggieProductsApp2.Models.ViewModels.ProductVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<br />
+<h4>Rediger produkt</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="form-group">
+                <label asp-for="Product.ProductName" class="control-label"></label>
+                <input asp-for="Product.ProductName" class="form-control" />
+                <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Description" class="control-label"></label>
+                <textarea asp-for="Product.Description" class="form-control"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.BrandName" class="control-label"></label>
+                <input asp-for="Product.BrandName" class="form-control" />
+                <span asp-validation-for="Product.BrandName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Price" class="control-label"></label>
+                <input asp-for="Product.Price" class="form-control" id="currencyTextBox"/>
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Date" class="control-label"></label>
+                <input asp-for="Product.Date" class="form-control" />
+                <span asp-validation-for="Product.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ShopName" class="control-label"></label>
+                <input asp-for="Product.ShopName" class="form-control" />
+                <span asp-validation-for="Product.ShopName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Adress" class="control-label"></label>
+                <input asp-for="Product.Adress" class="form-control" />
+                <span asp-validation-for="Product.Adress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Zipcode" class="control-label"></label>
+                <input asp-for="Product.Zipcode" class="form-control" />
+                <span asp-validation-for="Product.Zipcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.City" class="control-label"></label>
+                <input asp-for="Product.City" class="form-control" />
+                <span asp-validation-for="Product.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.CategoryId" class="control-label"></label>
+                <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Gem" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Product" asp-area="Admin" class="btn btn-info">Tilbage til listen</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        function setInputFilter(textbox, inputFilter) {
+            ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+                textbox.addEventListener(event, function () {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                });
+            });
+        }
+
+        setInputFilter(document.getElementById("currencyTextBox"), function (value) {
+            return /^-?\d*[,]?\d{0,2}$/.test(value);
+        });
+
+        //override jquery validation for comma
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+
+    </script>
+
+}

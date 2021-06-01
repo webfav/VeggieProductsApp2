@@ -1,0 +1,145 @@
+﻿@page
+@model RegisterModel
+@using VeggieProductsApp2.ManagedUsers
+@{
+    ViewData["Title"] = "Register";
+}
+
+<br />
+<h2>Opret ny bruger</h2>
+<br />
+
+<div class="row ">
+    <div class="col-md-5 border backgroundWhite">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.FullName" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.FullName" class="form-control" />
+                </div>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Zipcode" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Zipcode" class="form-control" />
+                </div>
+                <span asp-validation-for="Input.Zipcode" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Email" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Email" class="form-control" />
+                </div>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Password" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Password" class="form-control" />
+                </div>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.ConfirmPassword" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" />
+                </div>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+
+            @*<div class="form-group">
+            <label asp-for="Input.FullName"></label>
+            <input asp-for="Input.FullName" class="form-control" />
+            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Zipcode"></label>
+            <input asp-for="Input.Zipcode" class="form-control" />
+            <span asp-validation-for="Input.Zipcode" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>*@
+
+            @if (User.IsInRole(Users.ManagerUser))
+            {
+                <div class="form-group row">
+                    <div class="col-4">
+                    </div>
+                    <div class="col-8">
+                        <input type="radio" name="radioBtnUserRole" value="@Users.EndUser" checked /> @Users.EndUser 
+                        <input type="radio" name="radioBtnUserRole" value="@Users.ManagerUser" checked /> @Users.ManagerUser
+                    </div>
+                </div>
+            }
+
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    <button type="submit" class="btn btn-primary form-control">Register ny bruger</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Use another service to register.</h4>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>*@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
